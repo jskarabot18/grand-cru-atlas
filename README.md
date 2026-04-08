@@ -39,4 +39,4 @@ This work is licensed under [Creative Commons Attribution-NonCommercial 4.0 Inte
 
 ---
 
-*Jure Škarabot · New York*
+*Jure Skarabot · New York*
