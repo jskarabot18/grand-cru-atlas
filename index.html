@@ -494,7 +494,7 @@ const filterLabel=document.getElementById('filter-label');
 document.getElementById('reset-btn').addEventListener('click',resetAll);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')resetAll();});
 
-function resetAll(){selectedCat=null;selectedSite=null;updateAll();}
+function resetAll(){selectedCat=null;selectedSite=null;updateAll();map.flyTo([44,5],4,{duration:0.8});}
 
 // ============================================================================
 // SELECT SITE
