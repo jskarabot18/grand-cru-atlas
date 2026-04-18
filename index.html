@@ -599,17 +599,10 @@ function renderDetail(){
     const total=SITES.length;
     const cats=Object.keys(CATEGORIES).length;
     let html=`<div class="section-label">Atlas Overview</div>
-      <p style="font-size:12px;color:#555;margin-bottom:8px;line-height:1.5"><strong style="color:#7B2D26">${total}</strong> vineyard sites across <strong style="color:#7B2D26">${cats}</strong> grape categories, spanning the world's greatest terroirs from the blue slate of the Mosel to the volcanic schist of Etna.</p>
-      <div class="section-label" style="margin-top:14px">By Category</div>`;
-    Object.entries(CATEGORIES).forEach(([name,m])=>{
-      const count=SITES.filter(s=>s.cat===name).length;
-      html+=`<div class="site-item" data-cat="${name}"><span class="site-dot" style="background:${m.color}"></span><span class="site-name">${name}</span><span class="site-region">${count} sites</span></div>`;
-    });
-    html+=`<div class="hint-box"><strong>Interactions</strong><br>Click a category to filter the map.<br>Click a pin for vineyard details.<br>Search by vineyard, region, or producer.<br>Press <kbd>Esc</kbd> or ✕ Reset to return.<br>Scroll to zoom · drag to pan.</div>`;
+      <p style="font-size:12px;color:#555;margin-bottom:10px;line-height:1.55"><strong style="color:#7B2D26">${total}</strong> vineyard sites across <strong style="color:#7B2D26">${cats}</strong> grape categories, spanning the world's greatest terroirs from the blue slate of the Mosel to the volcanic schist of Etna.</p>
+      <p style="font-size:12px;color:#555;margin-bottom:10px;line-height:1.55">Each site is documented with its terroir, key producers, and signature character. Use the categories above to filter the map, or search by vineyard, region, or producer name.</p>
+      <div class="hint-box"><strong>How to use</strong><br>Click a category above to filter the map.<br>Click a pin for vineyard details.<br>Search by vineyard, region, or producer.<br>Press <kbd>Esc</kbd> or ✕ Reset to return.<br>Scroll to zoom · drag to pan.</div>`;
     det.innerHTML=html;
-    det.querySelectorAll('.site-item[data-cat]').forEach(el=>{
-      el.addEventListener('click',()=>{selectedCat=el.dataset.cat;selectedSite=null;updateAll();});
-    });
   }
 }
 
