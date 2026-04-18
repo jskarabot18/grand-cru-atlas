@@ -75,6 +75,36 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',system-ui
 .popup-region{font-size:11px;color:#888;margin-bottom:6px}
 .popup-row{font-size:11.5px;color:#444;margin-bottom:2px}
 .popup-row strong{color:#222}
+
+/* ── Colophon at bottom of panel ── */
+#colophon{
+  flex-shrink:0;
+  padding:14px 18px 16px;
+  border-top:1px solid #e8e2db;
+  background:#faf8f5;
+  text-align:center;
+}
+#colophon .motto{
+  font-family:'DM Serif Display',serif;
+  font-style:italic;
+  font-size:13px;
+  color:#7B2D26;
+  margin-bottom:10px;
+  letter-spacing:0.01em;
+}
+#colophon .links{
+  display:flex;justify-content:center;gap:14px;flex-wrap:wrap;
+  font-size:9px;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;
+  margin-bottom:8px;
+}
+#colophon .links a{
+  color:#7B2D26;text-decoration:none;transition:opacity .15s;
+}
+#colophon .links a:hover{opacity:0.6}
+#colophon .copyright{
+  font-size:8.5px;letter-spacing:0.2em;
+  text-transform:uppercase;font-weight:500;color:#a8a8a8;
+}
 </style>
 </head>
 <body>
@@ -98,6 +128,16 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',system-ui
   <div id="reset-bar"><span id="filter-label"></span><button id="reset-btn">✕ Reset</button></div>
   <div id="categories"><div class="section-label">Grape Categories</div><div id="cat-list"></div></div>
   <div id="detail"></div>
+  <div id="colophon">
+    <div class="motto">— in vino, cognitio —</div>
+    <div class="links">
+      <a href="https://jskarabot18.github.io/vinotheca/">Vinotheca</a>
+      <a href="https://github.com/jskarabot18/grand-cru-atlas" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/jskarabot18/grand-cru-atlas/blob/main/LICENSE" target="_blank" rel="noopener">CC BY-NC 4.0</a>
+      <a href="mailto:skarabot@yahoo.com">Contact</a>
+    </div>
+    <div class="copyright">© Jure Skarabot · MMXXVI</div>
+  </div>
 </div>
 <div id="map-container"><div id="map"></div></div>
 </div>
