@@ -75,36 +75,6 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',system-ui
 .popup-region{font-size:11px;color:#888;margin-bottom:6px}
 .popup-row{font-size:11.5px;color:#444;margin-bottom:2px}
 .popup-row strong{color:#222}
-
-/* ── Colophon at bottom of panel ── */
-#colophon{
-  flex-shrink:0;
-  padding:14px 18px 16px;
-  border-top:1px solid #e8e2db;
-  background:#faf8f5;
-  text-align:center;
-}
-#colophon .motto{
-  font-family:'DM Serif Display',serif;
-  font-style:italic;
-  font-size:13px;
-  color:#7B2D26;
-  margin-bottom:10px;
-  letter-spacing:0.01em;
-}
-#colophon .links{
-  display:flex;justify-content:center;gap:14px;flex-wrap:wrap;
-  font-size:9px;letter-spacing:0.15em;text-transform:uppercase;font-weight:600;
-  margin-bottom:8px;
-}
-#colophon .links a{
-  color:#7B2D26;text-decoration:none;transition:opacity .15s;
-}
-#colophon .links a:hover{opacity:0.6}
-#colophon .copyright{
-  font-size:8.5px;letter-spacing:0.2em;
-  text-transform:uppercase;font-weight:500;color:#a8a8a8;
-}
 </style>
 </head>
 <body>
@@ -116,7 +86,7 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',system-ui
   </div>
 
   <div id="downloads">
-    <a class="dl-btn" href="The_Grand_Cru_Atlas.pdf" target="_blank">
+    <a class="dl-btn" href="The_Grand_Cru_Atlas.pdf#page=1&view=Fit" target="_blank" rel="noopener">
       <svg viewBox="0 0 16 16"><path d="M8 1v9m0 0L5 7m3 3l3-3M3 13h10" stroke="#7B2D26" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Download Full Atlas (PDF)
     </a>
@@ -128,16 +98,6 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',system-ui
   <div id="reset-bar"><span id="filter-label"></span><button id="reset-btn">✕ Reset</button></div>
   <div id="categories"><div class="section-label">Grape Categories</div><div id="cat-list"></div></div>
   <div id="detail"></div>
-  <div id="colophon">
-    <div class="motto">— in vino, cognitio —</div>
-    <div class="links">
-      <a href="https://jskarabot18.github.io/vinotheca/">Vinotheca</a>
-      <a href="https://github.com/jskarabot18/grand-cru-atlas" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://github.com/jskarabot18/grand-cru-atlas/blob/main/LICENSE" target="_blank" rel="noopener">CC BY-NC 4.0</a>
-      <a href="mailto:skarabot@yahoo.com">Contact</a>
-    </div>
-    <div class="copyright">© Jure Skarabot · MMXXVI</div>
-  </div>
 </div>
 <div id="map-container"><div id="map"></div></div>
 </div>
@@ -163,12 +123,6 @@ const CATEGORIES = {
   "Chenin Blanc":{color:"#2E7D5B",bg:"rgba(46,125,91,0.08)"},
   "Grüner Veltliner":{color:"#5B8C3A",bg:"rgba(91,140,58,0.08)"},
   "Gamay":{color:"#7B5EA7",bg:"rgba(123,94,167,0.08)"},
-  "Sauvignon Blanc":{color:"#2E8B7E",bg:"rgba(46,139,126,0.08)"},
-  "Alsace Grands Crus":{color:"#E8B13D",bg:"rgba(232,177,61,0.08)"},
-  "Champagne":{color:"#A8A8A8",bg:"rgba(168,168,168,0.08)"},
-  "Volcanic":{color:"#1F1F1F",bg:"rgba(31,31,31,0.08)"},
-  "Corvina / Veneto":{color:"#9E2B25",bg:"rgba(158,43,37,0.08)"},
-  "Merlot":{color:"#352040",bg:"rgba(53,32,64,0.08)"},
 };
 
 const SITES = [
@@ -370,90 +324,6 @@ const SITES = [
   {n:"Régnié",r:"Beaujolais, France",cat:"Gamay",lat:46.156,lng:4.648,t:"Pink granite, sandy, light-bodied",p:"Domaine de la Gerarde"},
   {n:"Brouilly",r:"Beaujolais, France",cat:"Gamay",lat:46.122,lng:4.655,t:"Blue diorite at base, broader style",p:"Château de la Chaize"},
   {n:"Morgon — Corcelette",r:"Beaujolais, France",cat:"Gamay",lat:46.135,lng:4.668,t:"Clay/granite lieu-dit, aromatic",p:"Mee Godard, Jean-Marc Burgaud"},
-
-  // === SAUVIGNON BLANC ===
-  {n:"Les Monts Damnés",r:"Chavignol, Sancerre",cat:"Sauvignon Blanc",lat:47.343,lng:2.823,t:"Kimmeridgian marl (terres blanches)",p:"François Cotat, Henri Bourgeois, Vacheron, Thomas-Labaille"},
-  {n:"Le Cul de Beaujeu",r:"Chavignol, Sancerre",cat:"Sauvignon Blanc",lat:47.346,lng:2.82,t:"Kimmeridgian marl, north/northwest-facing, cooler than Monts Damnés",p:"François Cotat, Thomas-Labaille"},
-  {n:"La Grande Côte",r:"Chavignol, Sancerre",cat:"Sauvignon Blanc",lat:47.341,lng:2.826,t:"Kimmeridgian marl/limestone, south-facing",p:"François Cotat, Pascal Cotat"},
-  {n:"Le Chêne Marchand",r:"Bué, Sancerre",cat:"Sauvignon Blanc",lat:47.31,lng:2.841,t:"caillottes (small Oxfordian limestone pebbles), south/southeast-facing",p:"Vacheron, Vincent Pinard, Paul Prieur"},
-  {n:"Les Romains",r:"Bué, Sancerre",cat:"Sauvignon Blanc",lat:47.312,lng:2.845,t:"caillottes over Kimmeridgian marl, south-facing",p:"Vincent Pinard, Pascal Jolivet"},
-  {n:"Silex",r:"Saint-Andelain, Pouilly-Fumé",cat:"Sauvignon Blanc",lat:47.32,lng:2.96,t:"flint (silex) over clay, gently sloping plateau",p:"Didier Dagueneau, Serge Dagueneau"},
-  {n:"Les Loges / Pur Sang",r:"Saint-Andelain / Les Loges, Pouilly-Fumé",cat:"Sauvignon Blanc",lat:47.315,lng:2.955,t:"mixed Kimmeridgian marl and flint, south-facing",p:"Didier Dagueneau (Pur Sang), Alexandre Bain"},
-  {n:"Les Bascoins (Buisson Renard)",r:"Saint-Andelain, Pouilly-Fumé",cat:"Sauvignon Blanc",lat:47.318,lng:2.963,t:"flint/clay, sheltered",p:"Didier Dagueneau (Buisson Renard)"},
-  {n:"Château Haut-Brion Blanc",r:"Pessac-Léognan",cat:"Sauvignon Blanc",lat:44.8,lng:-0.615,t:"deep Günzian gravel over clay, warm urban microclimate",p:"Domaine Clarence Dillon (Haut-Brion, La Mission Haut-Brion)"},
-  {n:"Domaine de Chevalier",r:"Léognan",cat:"Sauvignon Blanc",lat:44.71,lng:-0.608,t:"gravel over clay, sheltered in the Landes pine forest",p:"Domaine de Chevalier"},
-  {n:"Smith Haut Lafitte (white parcels)",r:"Martillac",cat:"Sauvignon Blanc",lat:44.726,lng:-0.546,t:"Günzian gravel over clay",p:"Smith Haut Lafitte"},
-  {n:"Ried Zieregg",r:"Leutschach, Südsteiermark",cat:"Sauvignon Blanc",lat:46.683,lng:15.498,t:"opok (calcareous marl) over sandstone, steep south-facing, 400m+ elevation",p:"Weingut Tement"},
-  {n:"Ried Grassnitzberg",r:"Gamlitz, Südsteiermark",cat:"Sauvignon Blanc",lat:46.722,lng:15.553,t:"calcareous marl/sandstone, south-facing",p:"Sattlerhof, Tement"},
-  {n:"Ried Sulz",r:"Gamlitz, Südsteiermark",cat:"Sauvignon Blanc",lat:46.731,lng:15.568,t:"sandstone/marl, cooler microclimate",p:"Sattlerhof, Erwin Sabathi"},
-  {n:"Southern Valleys",r:"Marlborough, New Zealand",cat:"Sauvignon Blanc",lat:-41.565,lng:173.846,t:"clay-rich hillsides, Awatere-influenced cool temperatures",p:"Dog Point, Greywacke, Cloudy Bay (Te Koko parcels), Seresin"},
-  {n:"Awatere Valley",r:"Marlborough, New Zealand",cat:"Sauvignon Blanc",lat:-41.69,lng:174.065,t:"stonier soils, cooler, windier than the Wairau",p:"Villa Maria (Taylors Pass), Yealands, Vavasour"},
-  {n:"Casablanca Valley hillsides",r:"Casablanca, Chile",cat:"Sauvignon Blanc",lat:-33.323,lng:-71.411,t:"granitic/clay slopes, coastal fog influence",p:"Casas del Bosque, Matetic (EQ), Kingston Family"},
-
-  // === ALSACE GRANDS CRUS — GEWÜRZTRAMINER & PINOT GRIS ===
-  {n:"Rangen de Thann — Clos Saint-Urbain",r:"Thann, Alsace",cat:"Alsace Grands Crus",lat:47.813,lng:7.101,t:"volcanic tuff, steepest Alsace GC, south-facing, extreme slope",p:"Zind-Humbrecht (monopole), Schoffit"},
-  {n:"Kastelberg",r:"Andlau, Alsace",cat:"Alsace Grands Crus",lat:48.385,lng:7.414,t:"blue Steige schist, steepest slope in the Bas-Rhin",p:"Marc Kreydenweiss (Riesling-dominant, Pinot Gris notable)"},
-  {n:"Hengst",r:"Wintzenheim, Alsace",cat:"Alsace Grands Crus",lat:48.063,lng:7.315,t:"calcareous conglomerate/marl, south-southeast facing",p:"Josmeyer, Albert Mann, Barmès-Buecher, Zind-Humbrecht"},
-  {n:"Goldert",r:"Gueberschwihr, Alsace",cat:"Alsace Grands Crus",lat:48.004,lng:7.262,t:"oolitic Jurassic limestone, south-facing",p:"Zind-Humbrecht, Ernest Burn"},
-  {n:"Furstentum",r:"Kientzheim / Sigolsheim, Alsace",cat:"Alsace Grands Crus",lat:48.155,lng:7.268,t:"limestone/marl over schist, steep south-facing",p:"Weinbach, Albert Mann, Paul Blanck"},
-  {n:"Sporen",r:"Riquewihr, Alsace",cat:"Alsace Grands Crus",lat:48.168,lng:7.295,t:"heavy marl/clay, south-facing",p:"Hugel, Dopff au Moulin"},
-  {n:"Kessler",r:"Guebwiller, Alsace",cat:"Alsace Grands Crus",lat:47.908,lng:7.213,t:"red sandstone, warm microclimate, south-facing",p:"Dirler-Cadé, Domaines Schlumberger"},
-  {n:"Clos Jebsal",r:"Turckheim, Alsace",cat:"Alsace Grands Crus",lat:48.082,lng:7.28,t:"grey marl and gypsum, south-facing, Zind-Humbrecht monopole",p:"Zind-Humbrecht (monopole)"},
-  {n:"Rotenberg",r:"Wintzenheim, Alsace",cat:"Alsace Grands Crus",lat:48.068,lng:7.312,t:"iron-rich red clay/marl over limestone",p:"Albert Mann, Barmès-Buecher"},
-
-  // === CHAMPAGNE GRANDS CRUS ===
-  {n:"Le Mesnil-sur-Oger",r:"Côte des Blancs",cat:"Champagne",lat:48.937,lng:4.009,t:"pure Craie de Belemnites chalk, east-facing slope",p:"Salon, Krug (Clos du Mesnil), Pierre Péters, Guy Charlemagne"},
-  {n:"Cramant",r:"Côte des Blancs",cat:"Champagne",lat:48.999,lng:4.014,t:"deep chalk, east-facing gentle slope",p:"Diebolt-Vallois, Mumm (Grand Cru), De Sousa"},
-  {n:"Avize",r:"Côte des Blancs",cat:"Champagne",lat:48.968,lng:4.007,t:"chalk, east-facing, slightly warmer than Cramant",p:"Anselme Selosse, Agrapart, Jacquesson (Avize Champ Caïn)"},
-  {n:"Oger",r:"Côte des Blancs",cat:"Champagne",lat:48.951,lng:4.008,t:"chalk, east-facing, between Avize and Le Mesnil",p:"J.L. Vergnon, Larmandier-Bernier, Milan"},
-  {n:"Chouilly",r:"Côte des Blancs (north)",cat:"Champagne",lat:49.022,lng:4.013,t:"chalk, gentler slopes, warmer",p:"Legras, Vazart-Coquart, Pierre Gimonnet"},
-  {n:"Aÿ",r:"Montagne de Reims / Grande Vallée",cat:"Champagne",lat:49.057,lng:4.002,t:"chalk with clay, steep south-facing",p:"Bollinger (Vieilles Vignes Françaises), Deutz, Henriot, Gatinois"},
-  {n:"Bouzy",r:"Montagne de Reims (south face)",cat:"Champagne",lat:49.082,lng:4.152,t:"chalk with clay, south-facing",p:"Paul Bara, Egly-Ouriet, Georges Vesselle"},
-  {n:"Ambonnay",r:"Montagne de Reims (south face)",cat:"Champagne",lat:49.08,lng:4.148,t:"chalk, south-southeast-facing",p:"Egly-Ouriet, Marie-Noëlle Ledru, Krug (Clos d'Ambonnay)"},
-  {n:"Verzenay",r:"Montagne de Reims (north face)",cat:"Champagne",lat:49.173,lng:4.13,t:"chalk, cold north-facing slope",p:"Louis Roederer (Cristal sources), Alfred Gratien, Michel Arnould"},
-  {n:"Verzy",r:"Montagne de Reims (north face)",cat:"Champagne",lat:49.158,lng:4.148,t:"chalk, cold north-facing",p:"Maurice Vesselle, Juillet-Lallement, Étienne Lefèvre"},
-  {n:"Mailly-Champagne",r:"Montagne de Reims (north face)",cat:"Champagne",lat:49.187,lng:4.104,t:"chalk, north-facing",p:"Mailly Grand Cru (cooperative), Paul Bara"},
-  {n:"Clos du Mesnil",r:"Le Mesnil-sur-Oger",cat:"Champagne",lat:48.938,lng:4.011,t:"walled 1.87ha Chardonnay clos, chalk, Krug monopole",p:"Krug"},
-  {n:"Clos d'Ambonnay",r:"Ambonnay",cat:"Champagne",lat:49.081,lng:4.146,t:"walled 0.68ha Pinot Noir clos, chalk, Krug monopole",p:"Krug"},
-  {n:"Clos des Goisses",r:"Mareuil-sur-Aÿ",cat:"Champagne",lat:49.058,lng:4.028,t:"steep 5.5ha south-facing chalk slope, Philipponnat monopole",p:"Philipponnat"},
-  {n:"Clos Saint-Hilaire",r:"Mareuil-sur-Aÿ",cat:"Champagne",lat:49.058,lng:4.032,t:"1ha Pinot Noir clos, chalk/clay, Billecart-Salmon monopole",p:"Billecart-Salmon"},
-
-  // === VOLCANIC TERROIRS ===
-  {n:"Contrada Guardiola",r:"Etna Nord (Passopisciaro)",cat:"Volcanic",lat:37.858,lng:14.958,t:"black volcanic ash and lapilli, 800–1,000m elevation",p:"Passopisciaro, Graci, Girolamo Russo"},
-  {n:"Contrada Calderara Sottana",r:"Etna Nord (Randazzo)",cat:"Volcanic",lat:37.869,lng:14.963,t:"ancient lava flows, iron-rich volcanic sand, 700m",p:"Benanti, Tenuta delle Terre Nere"},
-  {n:"Contrada Feudo di Mezzo",r:"Etna Nord (Passopisciaro)",cat:"Volcanic",lat:37.846,lng:14.963,t:"mixed volcanic sand and ash, 650–750m",p:"Passopisciaro, Tenuta delle Terre Nere"},
-  {n:"Contrada Rampante",r:"Etna Nord (Passopisciaro)",cat:"Volcanic",lat:37.851,lng:14.957,t:"young lava and ash, 900m+",p:"Passopisciaro"},
-  {n:"Contrada Porcaria",r:"Etna Nord (Solicchiata)",cat:"Volcanic",lat:37.846,lng:14.976,t:"older lava flows, dense volcanic clay, 750m",p:"Giuseppe Russo, I Vigneri, Graci"},
-  {n:"Contrada Barbabecchi",r:"Etna Nord (Solicchiata)",cat:"Volcanic",lat:37.853,lng:14.978,t:"black volcanic sand, pre-phylloxera vines, 900m+",p:"Graci, I Vigneri (Salvo Foti)"},
-  {n:"Santorini old-vine kouloura plots",r:"Santorini, Greece",cat:"Volcanic",lat:36.402,lng:25.432,t:"pumice/volcanic ash (aspa), ungrafted pre-phylloxera vines, basket-trained",p:"Domaine Sigalas, Estate Argyros, Gaia Wines, Hatzidakis"},
-  {n:"Tenerife — Valle de la Orotava",r:"Tenerife, Canary Islands",cat:"Volcanic",lat:28.39,lng:-16.53,t:"volcanic ash/pumice, ungrafted vines on braided cordón trenzado",p:"Suertes del Marqués, Envínate (Taganan), Borja Pérez"},
-  {n:"Tenerife — Ycoden-Daute-Isora",r:"Tenerife (northwest)",cat:"Volcanic",lat:28.348,lng:-16.832,t:"young volcanic soils, coastal-influenced",p:"Envínate (Benje), Viñátigo"},
-  {n:"Lanzarote",r:"Lanzarote",cat:"Volcanic",lat:29.022,lng:-13.651,t:"black volcanic ash pits (zocos), single vines in volcanic hollows",p:"Bodegas Los Bermejos, El Grifo"},
-  {n:"Pico — Lajido walled vineyards",r:"Pico Island, Azores",cat:"Volcanic",lat:38.467,lng:-28.4,t:"black basalt currais walls, UNESCO World Heritage",p:"Azores Wine Company, Insula Vinhos"},
-  {n:"Auvergne — Côtes de Clermont & Boudes",r:"Auvergne, France",cat:"Volcanic",lat:45.779,lng:3.087,t:"basalt, pumice, volcanic conglomerate, 400–500m",p:"Pierre Beauger, Vincent Marie, Patrick Bouju"},
-
-  // === CORVINA & VENETO REDS — VALPOLICELLA & AMARONE ===
-  {n:"La Poja",r:"Fumane, Valpolicella Classica",cat:"Corvina / Veneto",lat:45.547,lng:10.898,t:"limestone hilltop monopole, 320m",p:"Allegrini (monopole)"},
-  {n:"Monte Sant'Urbano",r:"Fumane, Valpolicella Classica",cat:"Corvina / Veneto",lat:45.551,lng:10.901,t:"limestone/basalt, south-facing slopes",p:"Speri (monopole)"},
-  {n:"Campolongo di Torbe",r:"Negrar, Valpolicella Classica",cat:"Corvina / Veneto",lat:45.56,lng:10.953,t:"chalky marl, south-facing historic cru",p:"Masi (monopole-like), Novaia"},
-  {n:"Vigneto Mazzano",r:"Negrar, Valpolicella Classica",cat:"Corvina / Veneto",lat:45.564,lng:10.958,t:"limestone, high altitude, small-berried Corvina",p:"Masi"},
-  {n:"Monte Ca' Bianca",r:"Marano, Valpolicella Classica",cat:"Corvina / Veneto",lat:45.553,lng:10.928,t:"volcanic basalt over limestone, 450m",p:"Lorenzo Begali, Novaia"},
-  {n:"Vigneto di Monte Lodoletta",r:"Cellore d'Illasi, Valpolicella",cat:"Corvina / Veneto",lat:45.506,lng:11.183,t:"volcanic basalt/alluvial, high-density plantings",p:"Dal Forno Romano"},
-  {n:"Val d'Illasi — Quintarelli estate",r:"Negrar (border with Illasi)",cat:"Corvina / Veneto",lat:45.565,lng:10.942,t:"limestone/clay, 400m",p:"Giuseppe Quintarelli"},
-  {n:"Mezzane Valley high slopes",r:"Mezzane di Sotto",cat:"Corvina / Veneto",lat:45.487,lng:11.107,t:"limestone with volcanic inclusions",p:"Corte Sant'Alda"},
-  {n:"Recioto della Valpolicella — Classica slopes",r:"Fumane / Negrar / Marano",cat:"Corvina / Veneto",lat:45.55,lng:10.92,t:"same slopes as Amarone, selected higher-sugar bunches",p:"Masi (Mezzanella), Quintarelli, Allegrini"},
-
-  // === VARIETAL MERLOT — BEYOND POMEROL & SAINT-ÉMILION ===
-  {n:"Masseto",r:"Bolgheri, Tuscany",cat:"Merlot",lat:43.227,lng:10.616,t:"blue clay hilltop, the 'Italian Pétrus', 120m",p:"Tenuta dell'Ornellaia (monopole)"},
-  {n:"L'Apparita",r:"Gaiole in Chianti, Tuscany",cat:"Merlot",lat:43.464,lng:11.438,t:"galestro/alberese at 450m, isolated parcel",p:"Castello di Ama"},
-  {n:"Messorio",r:"Bolgheri, Tuscany",cat:"Merlot",lat:43.231,lng:10.622,t:"alluvial clay with limestone, south-facing",p:"Le Macchiole"},
-  {n:"Redigaffi",r:"Suvereto, Maremma, Tuscany",cat:"Merlot",lat:43.078,lng:10.676,t:"clay over schist, coastal-influenced",p:"Tua Rita"},
-  {n:"Tenuta di Trinoro — Merlot parcels",r:"Sarteano, Val d'Orcia, Tuscany",cat:"Merlot",lat:42.983,lng:11.842,t:"galestro at 500m, warm days/cold nights",p:"Tenuta di Trinoro (Andrea Franchetti)"},
-  {n:"Three Palms Vineyard",r:"Calistoga, Napa Valley",cat:"Merlot",lat:38.581,lng:-122.566,t:"alluvial gravel and cobblestone fan, warm northern Napa",p:"Duckhorn, Schweiger"},
-  {n:"Shafer Hillside Select Merlot blocks",r:"Stags Leap District, Napa",cat:"Merlot",lat:38.402,lng:-122.347,t:"volcanic/alluvial, sheltered Palisades",p:"Shafer Vineyards"},
-  {n:"Pahlmeyer Merlot estate",r:"Atlas Peak / Coombsville area, Napa",cat:"Merlot",lat:38.372,lng:-122.225,t:"volcanic/alluvial",p:"Pahlmeyer"},
-  {n:"Horse Heaven Hills — Canoe Ridge",r:"Columbia Valley, Washington",cat:"Merlot",lat:45.858,lng:-119.747,t:"loess over basalt, windy ridge above the Columbia River",p:"Quilceda Creek (Galitzine), Long Shadows (Pedestal)"},
-  {n:"Stellenbosch — Helderberg Merlot",r:"Stellenbosch, South Africa",cat:"Merlot",lat:-34.06,lng:18.852,t:"decomposed granite over clay, maritime",p:"Thelema, Ernie Els, Waterford"},
 ];
 
 // ============================================================================
@@ -534,7 +404,7 @@ const filterLabel=document.getElementById('filter-label');
 document.getElementById('reset-btn').addEventListener('click',resetAll);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')resetAll();});
 
-function resetAll(){selectedCat=null;selectedSite=null;updateAll();map.flyTo([44,5],4,{duration:0.8});}
+function resetAll(){selectedCat=null;selectedSite=null;updateAll();}
 
 // ============================================================================
 // SELECT SITE
@@ -639,10 +509,17 @@ function renderDetail(){
     const total=SITES.length;
     const cats=Object.keys(CATEGORIES).length;
     let html=`<div class="section-label">Atlas Overview</div>
-      <p style="font-size:12px;color:#555;margin-bottom:10px;line-height:1.55"><strong style="color:#7B2D26">${total}</strong> vineyard sites across <strong style="color:#7B2D26">${cats}</strong> grape categories, spanning the world's greatest terroirs from the blue slate of the Mosel to the volcanic schist of Etna.</p>
-      <p style="font-size:12px;color:#555;margin-bottom:10px;line-height:1.55">Each site is documented with its terroir, key producers, and signature character. Use the categories above to filter the map, or search by vineyard, region, or producer name.</p>
-      <div class="hint-box"><strong>How to use</strong><br>Click a category above to filter the map.<br>Click a pin for vineyard details.<br>Search by vineyard, region, or producer.<br>Press <kbd>Esc</kbd> or ✕ Reset to return.<br>Scroll to zoom · drag to pan.</div>`;
+      <p style="font-size:12px;color:#555;margin-bottom:8px;line-height:1.5"><strong style="color:#7B2D26">${total}</strong> vineyard sites across <strong style="color:#7B2D26">${cats}</strong> grape categories, spanning the world's greatest terroirs from the blue slate of the Mosel to the volcanic schist of Etna.</p>
+      <div class="section-label" style="margin-top:14px">By Category</div>`;
+    Object.entries(CATEGORIES).forEach(([name,m])=>{
+      const count=SITES.filter(s=>s.cat===name).length;
+      html+=`<div class="site-item" data-cat="${name}"><span class="site-dot" style="background:${m.color}"></span><span class="site-name">${name}</span><span class="site-region">${count} sites</span></div>`;
+    });
+    html+=`<div class="hint-box"><strong>Interactions</strong><br>Click a category to filter the map.<br>Click a pin for vineyard details.<br>Search by vineyard, region, or producer.<br>Press <kbd>Esc</kbd> or ✕ Reset to return.<br>Scroll to zoom · drag to pan.</div>`;
     det.innerHTML=html;
+    det.querySelectorAll('.site-item[data-cat]').forEach(el=>{
+      el.addEventListener('click',()=>{selectedCat=el.dataset.cat;selectedSite=null;updateAll();});
+    });
   }
 }
 
