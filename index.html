@@ -10,23 +10,30 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',system-ui,sans-serif;background:#FAF8F5}
-#app{display:flex;width:100%;height:100%}
 
-#panel{width:340px;min-width:340px;background:#fff;border-right:1px solid #e8e2db;display:flex;flex-direction:column;overflow:hidden;z-index:1000}
-#panel-header{padding:20px 18px 14px;border-bottom:1px solid #e8e2db}
-#panel-header h1{font-family:'DM Serif Display',serif;font-size:22px;color:#7B2D26;letter-spacing:-0.5px}
-#panel-header .sub{font-size:11px;color:#888;margin-top:3px;line-height:1.4}
+/* Layout: masthead spans full width on top; rail and map sit side-by-side below.
+   Mirrors Estate Atlas's structure (auto/1fr rows × panel/1fr columns). */
+#app{display:grid;grid-template-columns:340px 1fr;grid-template-rows:auto 1fr;width:100%;height:100%}
 
-#downloads{padding:8px 18px 4px;border-bottom:1px solid #e8e2db}
+#masthead{grid-column:1 / -1;display:flex;align-items:center;justify-content:space-between;padding:18px 28px;background:#FAF8F5;border-bottom:1px solid #e8e2db;z-index:1100}
+#masthead h1{font-family:'DM Serif Display',serif;font-size:22px;color:#7B2D26;letter-spacing:-0.5px;line-height:1}
+#masthead-meta{display:flex;align-items:center;gap:14px;font-size:11px;letter-spacing:0.05em;text-transform:uppercase}
+#masthead-meta a{color:#888;text-decoration:none;border-bottom:1px solid transparent;padding-bottom:1px;transition:color .15s,border-color .15s}
+#masthead-meta a:hover{color:#7B2D26;border-bottom-color:#7B2D26}
+#masthead-meta .divider{color:#ccc}
+
+#panel{background:#fff;border-right:1px solid #e8e2db;display:flex;flex-direction:column;overflow:hidden;z-index:1000}
+#panel-sub{padding:14px 18px 12px;border-bottom:1px solid #e8e2db;font-size:11.5px;color:#888;line-height:1.5;font-style:italic}
+
 .dl-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:7px 10px;border:1px solid #d4c4be;border-radius:6px;background:#faf8f5;font-size:11px;font-family:'DM Sans',sans-serif;color:#7B2D26;cursor:pointer;text-decoration:none;font-weight:600;transition:all .15s;line-height:1.2}
 .dl-btn:hover{background:#7B2D26;color:#fff;border-color:#7B2D26}
 .dl-btn svg{width:13px;height:13px;flex-shrink:0}
 .dl-btn:hover svg path{stroke:#fff}
 
-#search-box{padding:10px 18px}
+#search-box{padding:14px 18px 10px;position:relative}
 #search-input{width:100%;padding:9px 12px;border:1px solid #ddd;border-radius:7px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:#faf8f5;transition:border-color .15s}
 #search-input:focus{border-color:#7B2D26}
-#search-results{margin-top:4px;border:1px solid #eee;border-radius:7px;background:#fff;max-height:250px;overflow:auto;display:none}
+#search-results{margin-top:4px;border:1px solid #eee;border-radius:7px;background:#fff;max-height:250px;overflow:auto;display:none;position:absolute;left:18px;right:18px;z-index:1100}
 .sr-item{padding:7px 12px;cursor:pointer;font-size:12px;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;gap:8px}
 .sr-item:hover{background:#faf8f5}
 .sr-item:last-child{border-bottom:none}
@@ -37,18 +44,20 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',system-ui
 #reset-btn{padding:4px 12px;border:1px solid #d4a89a;border-radius:5px;background:#fff;font-size:11px;font-family:'DM Sans',sans-serif;color:#7B2D26;cursor:pointer;font-weight:600;transition:all .15s}
 #reset-btn:hover{background:#7B2D26;color:#fff}
 
-#categories{padding:6px 18px 10px;overflow-y:auto;max-height:260px}
-#cat-dropdown-wrap{padding:8px 18px 10px;border-bottom:1px solid #e8e2db}
+.dropdown-wrap{padding:10px 18px}
+.dropdown-wrap + .dropdown-wrap{padding-top:0}
 .dropdown-label{display:block;font-size:10px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
-#cat-dropdown{width:100%;padding:8px 28px 8px 12px;border:1px solid #ddd;border-radius:7px;font-size:13px;font-family:'DM Sans',sans-serif;color:#333;background:#faf8f5;outline:none;transition:border-color .15s;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%237B2D26' fill='none' stroke-width='1.5'/></svg>");background-repeat:no-repeat;background-position:right 10px center}
-#cat-dropdown:focus{border-color:#7B2D26}
-.section-label{font-size:10px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
-.cat-item{padding:6px 10px;margin-bottom:2px;border-radius:6px;cursor:pointer;border:1.5px solid transparent;transition:all .15s;display:flex;align-items:center;gap:8px;font-size:11.5px}
-.cat-item:hover{background:#faf8f5}
-.cat-item.active{border-color:var(--cc);background:var(--cbg)}
-.cat-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-.cat-label{flex:1;color:#333;line-height:1.2}
-.cat-count{font-size:10px;color:#aaa}
+.atlas-dropdown{width:100%;padding:8px 28px 8px 12px;border:1px solid #ddd;border-radius:7px;font-size:13px;font-family:'DM Sans',sans-serif;color:#333;background:#faf8f5;outline:none;transition:border-color .15s;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%237B2D26' fill='none' stroke-width='1.5'/></svg>");background-repeat:no-repeat;background-position:right 10px center}
+.atlas-dropdown:focus{border-color:#7B2D26}
+
+/* Color legend — preserved minimal version of the old categories list */
+#color-legend{padding:10px 18px 12px;border-top:1px solid #e8e2db;border-bottom:1px solid #e8e2db}
+#color-legend .legend-label{font-size:10px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
+#color-legend .legend-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 8px}
+#color-legend .legend-item{display:flex;align-items:center;gap:6px;font-size:10.5px;color:#666;line-height:1.3;cursor:pointer;padding:2px 0}
+#color-legend .legend-item:hover{color:#7B2D26}
+#color-legend .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+#color-legend .legend-item.active{color:#7B2D26;font-weight:600}
 
 #detail{flex:1;overflow-y:auto;overflow-x:hidden;border-top:1px solid #e8e2db;padding:14px 18px}
 .detail-name{font-family:'DM Serif Display',serif;font-size:17px;color:#1a1a1a;margin-bottom:4px}
@@ -92,30 +101,45 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',system-ui
 </head>
 <body>
 <div id="app">
-<div id="panel">
-  <div id="panel-header">
-    <h1>The Grand Cru Atlas</h1>
-    <div class="sub">World's Greatest Vineyards by Grape Variety</div>
-  </div>
 
-  <div id="downloads">
-    <a class="dl-btn" href="The_Grand_Cru_Atlas.pdf#page=1&view=Fit&toolbar=1&navpanes=0" target="_blank" rel="noopener">
-      <svg viewBox="0 0 16 16"><path d="M8 1v9m0 0L5 7m3 3l3-3M3 13h10" stroke="#7B2D26" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Download Full Atlas (PDF)
-    </a>
+<header id="masthead">
+  <h1>The Grand Cru Atlas</h1>
+  <div id="masthead-meta">
+    <a href="https://jskarabot18.github.io/vinotheca/">Vinotheca</a>
+    <span class="divider">·</span>
+    <a href="The_Grand_Cru_Atlas.pdf#page=1&view=Fit&toolbar=1&navpanes=0" target="_blank" rel="noopener">Download Grand Cru Atlas PDF</a>
   </div>
+</header>
+
+<div id="panel">
+  <div id="panel-sub">World's greatest vineyards, organised by grape variety. <em>167 sites across 16 grape categories, spanning the world's principal terroirs.</em></div>
+
   <div id="search-box">
     <input type="text" id="search-input" placeholder="Search vineyard or region..." autocomplete="off"/>
     <div id="search-results"></div>
   </div>
+
   <div id="reset-bar"><span id="filter-label"></span><button id="reset-btn">✕ Reset</button></div>
-  <div id="cat-dropdown-wrap">
+
+  <div class="dropdown-wrap">
     <label class="dropdown-label" for="cat-dropdown">Filter by grape</label>
-    <select id="cat-dropdown">
+    <select id="cat-dropdown" class="atlas-dropdown">
       <option value="">All grape categories</option>
     </select>
   </div>
-  <div id="categories"><div class="section-label">Grape Categories</div><div id="cat-list"></div></div>
+
+  <div class="dropdown-wrap">
+    <label class="dropdown-label" for="region-dropdown">Filter by region</label>
+    <select id="region-dropdown" class="atlas-dropdown">
+      <option value="">All regions</option>
+    </select>
+  </div>
+
+  <div id="color-legend">
+    <div class="legend-label">Pin colours</div>
+    <div class="legend-grid" id="legend-grid"></div>
+  </div>
+
   <div id="detail"></div>
   <footer id="atlas-footer">
     <p class="atlas-footer-motto">
@@ -361,6 +385,7 @@ const SITES = [
 // APP STATE
 // ============================================================================
 let selectedCat = null;
+let selectedRegion = null;
 let selectedSite = null;
 
 // ============================================================================
@@ -392,23 +417,27 @@ SITES.forEach((s,i) => {
 });
 
 // ============================================================================
-// CATEGORIES
+// COLOR LEGEND  — small inline legend so colored map pins remain readable
 // ============================================================================
-const catList = document.getElementById('cat-list');
-Object.entries(CATEGORIES).forEach(([name,meta]) => {
-  const count = SITES.filter(s=>s.cat===name).length;
+const legendGrid = document.getElementById('legend-grid');
+Object.entries(CATEGORIES).forEach(([name, meta]) => {
   const el = document.createElement('div');
-  el.className='cat-item';el.dataset.cat=name;
-  el.style.setProperty('--cc',meta.color);el.style.setProperty('--cbg',meta.bg);
-  el.innerHTML=`<span class="cat-dot" style="background:${meta.color}"></span><span class="cat-label">${name}</span><span class="cat-count">${count}</span>`;
-  el.addEventListener('click',()=>{
-    if(selectedCat===name){selectedCat=null;}else{selectedCat=name;selectedSite=null;}
+  el.className = 'legend-item';
+  el.dataset.cat = name;
+  el.innerHTML = `<span class="legend-dot" style="background:${meta.color}"></span><span>${name}</span>`;
+  el.addEventListener('click', () => {
+    selectedCat = (selectedCat === name) ? null : name;
+    selectedSite = null;
     updateAll();
   });
-  catList.appendChild(el);
+  legendGrid.appendChild(el);
 });
 
-// Dropdown filter (mirrors the visible cat-list — kept in sync via updateAll)
+// ============================================================================
+// FILTER DROPDOWNS — Grape and Region
+// ============================================================================
+const ALL_REGIONS = [...new Set(SITES.map(s => s.r))].sort();
+
 const catDropdown = document.getElementById('cat-dropdown');
 Object.keys(CATEGORIES).forEach(name => {
   const opt = document.createElement('option');
@@ -418,8 +447,22 @@ Object.keys(CATEGORIES).forEach(name => {
 });
 catDropdown.addEventListener('change', () => {
   const v = catDropdown.value;
-  if (!v) { selectedCat = null; }
-  else    { selectedCat = v; selectedSite = null; }
+  selectedCat = v || null;
+  selectedSite = null;
+  updateAll();
+});
+
+const regionDropdown = document.getElementById('region-dropdown');
+ALL_REGIONS.forEach(r => {
+  const opt = document.createElement('option');
+  opt.value = r;
+  opt.textContent = r;
+  regionDropdown.appendChild(opt);
+});
+regionDropdown.addEventListener('change', () => {
+  const v = regionDropdown.value;
+  selectedRegion = v || null;
+  selectedSite = null;
   updateAll();
 });
 
@@ -452,7 +495,11 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')resetAll();});
 
 function resetAll(){
   selectedCat=null;
+  selectedRegion=null;
   selectedSite=null;
+  // Also clear search input + results panel
+  if (typeof searchInput !== 'undefined') { searchInput.value = ''; }
+  if (typeof searchResults !== 'undefined') { searchResults.style.display = 'none'; }
   updateAll();
   map.setView([48,10],4);
 }
@@ -463,6 +510,7 @@ function resetAll(){
 function selectSite(idx){
   selectedSite=idx;
   selectedCat=null;
+  selectedRegion=null;
   updateAll();
   const s=SITES[idx];
   map.flyTo([s.lat,s.lng],10,{duration:0.8});
@@ -471,26 +519,42 @@ function selectSite(idx){
 // ============================================================================
 // UPDATE ALL
 // ============================================================================
+// Sites that pass the current filters (intersection of cat + region).
+// A site with no filter active passes trivially.
+function siteMatchesFilters(s){
+  if (selectedCat    && s.cat !== selectedCat) return false;
+  if (selectedRegion && s.r   !== selectedRegion) return false;
+  return true;
+}
+
 function updateAll(){
-  // Categories
-  document.querySelectorAll('.cat-item').forEach(el=>el.classList.toggle('active',selectedCat===el.dataset.cat));
+  // Sync legend item highlight (the small color-dot legend)
+  document.querySelectorAll('.legend-item').forEach(el=>{
+    el.classList.toggle('active', selectedCat===el.dataset.cat);
+  });
 
-  // Keep the dropdown in sync with the visible list
-  const dd = document.getElementById('cat-dropdown');
-  if (dd) dd.value = selectedCat || '';
+  // Sync the dropdowns to current state
+  const catDD = document.getElementById('cat-dropdown');
+  const regDD = document.getElementById('region-dropdown');
+  if (catDD) catDD.value = selectedCat    || '';
+  if (regDD) regDD.value = selectedRegion || '';
 
-  // Reset bar
-  if(selectedSite!==null){
-    filterLabel.textContent=`Viewing: ${SITES[selectedSite].n}`;
+  // Reset bar — show a label describing the active filter state
+  const labels = [];
+  if (selectedSite !== null) {
+    labels.push(`Viewing: ${SITES[selectedSite].n}`);
+  } else {
+    if (selectedCat)    labels.push(`Grape: ${selectedCat}`);
+    if (selectedRegion) labels.push(`Region: ${selectedRegion}`);
+  }
+  if (labels.length) {
+    filterLabel.textContent = labels.join(' · ');
     resetBar.classList.add('active');
-  }else if(selectedCat){
-    filterLabel.textContent=`Category: ${selectedCat}`;
-    resetBar.classList.add('active');
-  }else{
+  } else {
     resetBar.classList.remove('active');
   }
 
-  // Markers
+  // Markers — dim sites that don't match active filters
   SITES.forEach((s,i)=>{
     const el=markers[i].getElement();
     if(!el)return;
@@ -498,20 +562,21 @@ function updateAll(){
     if(!dot)return;
     dot.classList.remove('dimmed','highlighted');
     if(selectedSite!==null){
-      if(i===selectedSite)dot.classList.add('highlighted');
-      else if(SITES[i].cat===SITES[selectedSite].cat){}
+      if(i===selectedSite) dot.classList.add('highlighted');
+      else if(SITES[i].cat===SITES[selectedSite].cat) {}
       else dot.classList.add('dimmed');
-    }else if(selectedCat){
-      if(s.cat!==selectedCat)dot.classList.add('dimmed');
+    } else if (selectedCat || selectedRegion) {
+      if (!siteMatchesFilters(s)) dot.classList.add('dimmed');
     }
   });
 
-  // Fit bounds for category
-  if(selectedCat && selectedSite===null){
-    const catSites=SITES.filter(s=>s.cat===selectedCat);
-    if(catSites.length>0){
-      const bounds=L.latLngBounds(catSites.map(s=>[s.lat,s.lng]));
-      map.flyToBounds(bounds.pad(0.2),{duration:0.8});
+  // Fit bounds when a filter is active and no specific site is selected.
+  // Combines cat + region: zooms to the intersection of whatever's active.
+  if ((selectedCat || selectedRegion) && selectedSite===null) {
+    const matching = SITES.filter(siteMatchesFilters);
+    if (matching.length > 0) {
+      const bounds = L.latLngBounds(matching.map(s=>[s.lat,s.lng]));
+      map.flyToBounds(bounds.pad(0.2), {duration:0.8});
     }
   }
 
