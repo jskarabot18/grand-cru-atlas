@@ -38,6 +38,10 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',system-ui
 #reset-btn:hover{background:#7B2D26;color:#fff}
 
 #categories{padding:6px 18px 10px;overflow-y:auto;max-height:260px}
+#cat-dropdown-wrap{padding:8px 18px 10px;border-bottom:1px solid #e8e2db}
+.dropdown-label{display:block;font-size:10px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
+#cat-dropdown{width:100%;padding:8px 28px 8px 12px;border:1px solid #ddd;border-radius:7px;font-size:13px;font-family:'DM Sans',sans-serif;color:#333;background:#faf8f5;outline:none;transition:border-color .15s;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%237B2D26' fill='none' stroke-width='1.5'/></svg>");background-repeat:no-repeat;background-position:right 10px center}
+#cat-dropdown:focus{border-color:#7B2D26}
 .section-label{font-size:10px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
 .cat-item{padding:6px 10px;margin-bottom:2px;border-radius:6px;cursor:pointer;border:1.5px solid transparent;transition:all .15s;display:flex;align-items:center;gap:8px;font-size:11.5px}
 .cat-item:hover{background:#faf8f5}
@@ -105,6 +109,12 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',system-ui
     <div id="search-results"></div>
   </div>
   <div id="reset-bar"><span id="filter-label"></span><button id="reset-btn">✕ Reset</button></div>
+  <div id="cat-dropdown-wrap">
+    <label class="dropdown-label" for="cat-dropdown">Filter by grape</label>
+    <select id="cat-dropdown">
+      <option value="">All grape categories</option>
+    </select>
+  </div>
   <div id="categories"><div class="section-label">Grape Categories</div><div id="cat-list"></div></div>
   <div id="detail"></div>
   <footer id="atlas-footer">
@@ -116,9 +126,6 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',system-ui
       <a href="https://github.com/jskarabot18/grand-cru-atlas/blob/main/LICENSE">License · CC BY-NC 4.0</a>
       <a href="https://jskarabot18.github.io/vinotheca/">Vinotheca</a>
       <a href="mailto:skarabot@yahoo.com">Correspondence</a>
-    </p>
-    <p class="atlas-footer-disclaimer">
-      A reference work, not a guide. Not affiliated with any producer, certification body, or publication.
     </p>
     <p class="atlas-footer-copyright">© Jure Skarabot · MMXXVI</p>
   </footer>
@@ -359,7 +366,7 @@ let selectedSite = null;
 // ============================================================================
 // MAP
 // ============================================================================
-const map = L.map('map',{zoomControl:true}).setView([44,5],4);
+const map = L.map('map',{zoomControl:true}).setView([48,10],4);
 L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
   attribution:'&copy; <a href="https://carto.com/">CARTO</a>',
   maxZoom:19
@@ -401,6 +408,21 @@ Object.entries(CATEGORIES).forEach(([name,meta]) => {
   catList.appendChild(el);
 });
 
+// Dropdown filter (mirrors the visible cat-list — kept in sync via updateAll)
+const catDropdown = document.getElementById('cat-dropdown');
+Object.keys(CATEGORIES).forEach(name => {
+  const opt = document.createElement('option');
+  opt.value = name;
+  opt.textContent = name;
+  catDropdown.appendChild(opt);
+});
+catDropdown.addEventListener('change', () => {
+  const v = catDropdown.value;
+  if (!v) { selectedCat = null; }
+  else    { selectedCat = v; selectedSite = null; }
+  updateAll();
+});
+
 // ============================================================================
 // SEARCH
 // ============================================================================
@@ -428,7 +450,12 @@ const filterLabel=document.getElementById('filter-label');
 document.getElementById('reset-btn').addEventListener('click',resetAll);
 document.addEventListener('keydown',e=>{if(e.key==='Escape')resetAll();});
 
-function resetAll(){selectedCat=null;selectedSite=null;updateAll();}
+function resetAll(){
+  selectedCat=null;
+  selectedSite=null;
+  updateAll();
+  map.setView([48,10],4);
+}
 
 // ============================================================================
 // SELECT SITE
@@ -447,6 +474,10 @@ function selectSite(idx){
 function updateAll(){
   // Categories
   document.querySelectorAll('.cat-item').forEach(el=>el.classList.toggle('active',selectedCat===el.dataset.cat));
+
+  // Keep the dropdown in sync with the visible list
+  const dd = document.getElementById('cat-dropdown');
+  if (dd) dd.value = selectedCat || '';
 
   // Reset bar
   if(selectedSite!==null){
