@@ -6,75 +6,87 @@
 <title>The Grand Cru Atlas — World's Greatest Vineyards</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 <style>
+:root {
+  --wine:         var(--wine);
+  --wine-dark:    #5A1F1A;
+  --wine-light:   #A04038;
+  --paper:        #FAF6F1;
+  --paper-raised: #FFFDF8;
+  --paper-deep:   #ece4d6;
+  --ink:          #1a1a1a;
+  --ink-soft:     #5a5048;
+  --ink-muted:    #8a7a6e;
+  --border:       var(--border);
+}
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',system-ui,sans-serif;background:#FAF8F5}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'EB Garamond',Georgia,serif;background:var(--paper)}
 
 /* Layout: masthead spans full width on top; rail and map sit side-by-side below.
    Mirrors Estate Atlas's structure (auto/1fr rows × panel/1fr columns). */
 #app{display:grid;grid-template-columns:340px 1fr;grid-template-rows:auto 1fr;width:100%;height:100%}
 
-#masthead{grid-column:1 / -1;display:flex;align-items:flex-end;justify-content:space-between;padding:18px 28px;background:#FAF8F5;border-bottom:1px solid #e8e2db;z-index:1100}
+#masthead{grid-column:1 / -1;display:flex;align-items:flex-end;justify-content:space-between;padding:18px 28px;background:var(--paper);border-bottom:1px solid var(--border);z-index:1100}
 .masthead-titleblock{display:flex;flex-direction:column;gap:4px}
-.masthead-eyebrow{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#8a7a6e;font-weight:500;margin:0}
-#masthead h1{font-family:'Cormorant Garamond','EB Garamond',serif;font-size:26px;font-weight:500;color:#7B2D26;letter-spacing:0.01em;line-height:1;margin:0}
+.masthead-eyebrow{font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted);font-weight:500;margin:0}
+#masthead h1{font-family:'Cormorant Garamond','EB Garamond',serif;font-size:26px;font-weight:500;color:var(--wine);letter-spacing:0.01em;line-height:1;margin:0}
   #masthead h1 em{font-style:italic;font-weight:400}
 #masthead-meta{display:flex;align-items:center;gap:14px;font-size:11px;letter-spacing:0.05em;text-transform:uppercase}
 #masthead-meta a{color:#888;text-decoration:none;border-bottom:1px solid transparent;padding-bottom:1px;transition:color .15s,border-color .15s}
-#masthead-meta a:hover{color:#7B2D26;border-bottom-color:#7B2D26}
+#masthead-meta a:hover{color:var(--wine);border-bottom-color:var(--wine)}
 #masthead-meta .divider{color:#ccc}
 
-#panel{background:#fff;border-right:1px solid #e8e2db;display:flex;flex-direction:column;overflow:hidden;z-index:1000}
-#panel-sub{padding:14px 18px 12px;border-bottom:1px solid #e8e2db;font-size:11.5px;color:#888;line-height:1.5;font-style:italic}
+#panel{background:var(--paper-raised);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;z-index:1000}
+#panel-sub{padding:14px 18px 12px;border-bottom:1px solid var(--border);font-size:11.5px;color:#888;line-height:1.5;font-style:italic}
 
-.dl-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:7px 10px;border:1px solid #d4c4be;border-radius:6px;background:#faf8f5;font-size:11px;font-family:'DM Sans',sans-serif;color:#7B2D26;cursor:pointer;text-decoration:none;font-weight:600;transition:all .15s;line-height:1.2}
-.dl-btn:hover{background:#7B2D26;color:#fff;border-color:#7B2D26}
+.dl-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:7px 10px;border:1px solid #d4c4be;border-radius:6px;background:var(--paper);font-size:11px;font-family:'EB Garamond',serif;color:var(--wine);cursor:pointer;text-decoration:none;font-weight:600;transition:all .15s;line-height:1.2}
+.dl-btn:hover{background:var(--wine);color:#fff;border-color:var(--wine)}
 .dl-btn svg{width:13px;height:13px;flex-shrink:0}
 .dl-btn:hover svg path{stroke:#fff}
 
 #search-box{padding:14px 18px 10px;position:relative}
-#search-input{width:100%;padding:9px 12px;border:1px solid #ddd;border-radius:7px;font-size:13px;font-family:'DM Sans',sans-serif;outline:none;background:#faf8f5;transition:border-color .15s}
-#search-input:focus{border-color:#7B2D26}
-#search-results{margin-top:4px;border:1px solid #eee;border-radius:7px;background:#fff;max-height:250px;overflow:auto;display:none;position:absolute;left:18px;right:18px;z-index:1100}
+#search-input{width:100%;padding:9px 12px;border:1px solid #ddd;border-radius:7px;font-size:13px;font-family:'EB Garamond',serif;outline:none;background:var(--paper);transition:border-color .15s}
+#search-input:focus{border-color:var(--wine)}
+#search-results{margin-top:4px;border:1px solid #eee;border-radius:7px;background:var(--paper-raised);max-height:250px;overflow:auto;display:none;position:absolute;left:18px;right:18px;z-index:1100}
 .sr-item{padding:7px 12px;cursor:pointer;font-size:12px;border-bottom:1px solid #f5f5f5;display:flex;align-items:center;gap:8px}
-.sr-item:hover{background:#faf8f5}
+.sr-item:hover{background:var(--paper)}
 .sr-item:last-child{border-bottom:none}
 
 #reset-bar{display:none;padding:8px 18px;background:#fdf6f0;border-bottom:1px solid #f0e0d0;align-items:center;gap:8px}
 #reset-bar.active{display:flex}
-#filter-label{flex:1;font-size:11.5px;color:#7B2D26;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-#reset-btn{padding:4px 12px;border:1px solid #d4a89a;border-radius:5px;background:#fff;font-size:11px;font-family:'DM Sans',sans-serif;color:#7B2D26;cursor:pointer;font-weight:600;transition:all .15s}
-#reset-btn:hover{background:#7B2D26;color:#fff}
+#filter-label{flex:1;font-size:11.5px;color:var(--wine);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#reset-btn{padding:4px 12px;border:1px solid #d4a89a;border-radius:5px;background:var(--paper-raised);font-size:11px;font-family:'EB Garamond',serif;color:var(--wine);cursor:pointer;font-weight:600;transition:all .15s}
+#reset-btn:hover{background:var(--wine);color:#fff}
 
 .dropdown-wrap{padding:10px 18px}
 .dropdown-wrap + .dropdown-wrap{padding-top:0}
 .dropdown-label{display:block;font-size:10px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:5px}
-.atlas-dropdown{width:100%;padding:8px 28px 8px 12px;border:1px solid #ddd;border-radius:7px;font-size:13px;font-family:'DM Sans',sans-serif;color:#333;background:#faf8f5;outline:none;transition:border-color .15s;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%237B2D26' fill='none' stroke-width='1.5'/></svg>");background-repeat:no-repeat;background-position:right 10px center}
-.atlas-dropdown:focus{border-color:#7B2D26}
+.atlas-dropdown{width:100%;padding:8px 28px 8px 12px;border:1px solid #ddd;border-radius:7px;font-size:13px;font-family:'EB Garamond',serif;color:#333;background:var(--paper);outline:none;transition:border-color .15s;appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%237B2D26' fill='none' stroke-width='1.5'/></svg>");background-repeat:no-repeat;background-position:right 10px center}
+.atlas-dropdown:focus{border-color:var(--wine)}
 
 /* Color legend — preserved minimal version of the old categories list */
-#color-legend{padding:10px 18px 12px;border-top:1px solid #e8e2db;border-bottom:1px solid #e8e2db}
+#color-legend{padding:10px 18px 12px;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
 #color-legend .legend-label{font-size:10px;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:1px;margin-bottom:6px}
 #color-legend .legend-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px 8px}
 #color-legend .legend-item{display:flex;align-items:center;gap:6px;font-size:10.5px;color:#666;line-height:1.3;cursor:pointer;padding:2px 0}
-#color-legend .legend-item:hover{color:#7B2D26}
+#color-legend .legend-item:hover{color:var(--wine)}
 #color-legend .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-#color-legend .legend-item.active{color:#7B2D26;font-weight:600}
+#color-legend .legend-item.active{color:var(--wine);font-weight:600}
 
-#detail{flex:1;overflow-y:auto;overflow-x:hidden;border-top:1px solid #e8e2db;padding:14px 18px}
-.detail-name{font-family:'DM Serif Display',serif;font-size:17px;color:#1a1a1a;margin-bottom:4px}
+#detail{flex:1;overflow-y:auto;overflow-x:hidden;border-top:1px solid var(--border);padding:14px 18px}
+.detail-name{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--ink);margin-bottom:4px}
 .detail-region{font-size:12px;color:#888;margin-bottom:8px}
 .detail-row{display:flex;gap:6px;margin-bottom:4px;font-size:11.5px;line-height:1.4}
 .detail-label{width:70px;color:#999;flex-shrink:0;font-weight:600}
 .detail-val{color:#333;flex:1}
 .site-item{padding:6px 10px;margin-bottom:2px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:11.5px}
-.site-item:hover{background:#faf8f5}
+.site-item:hover{background:var(--paper)}
 .site-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
 .site-name{flex:1;color:#333}
 .site-region{font-size:9.5px;color:#aaa}
 
-.hint-box{margin-top:14px;padding:12px;background:#faf8f5;border-radius:8px;font-size:10.5px;color:#888;line-height:1.6}
+.hint-box{margin-top:14px;padding:12px;background:var(--paper);border-radius:8px;font-size:10.5px;color:#888;line-height:1.6}
 .hint-box strong{color:#666}
 
 #map-container{flex:1;position:relative}
@@ -85,19 +97,19 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',system-ui
 .custom-marker.dimmed{opacity:0;transform:scale(0.5);pointer-events:none}
 .custom-marker.highlighted{border-color:#000;box-shadow:0 0 0 3px rgba(123,45,38,0.4);transform:scale(1.4);z-index:9999!important}
 
-.leaflet-popup-content-wrapper{border-radius:10px;font-family:'DM Sans',sans-serif}
+.leaflet-popup-content-wrapper{border-radius:10px;font-family:'EB Garamond',serif}
 .leaflet-popup-content{margin:12px 16px;line-height:1.5}
-.popup-title{font-family:'DM Serif Display',serif;font-size:15px;color:#7B2D26;margin-bottom:4px}
+.popup-title{font-family:'Cormorant Garamond',serif;font-size:15px;color:var(--wine);margin-bottom:4px}
 .popup-region{font-size:11px;color:#888;margin-bottom:6px}
 .popup-row{font-size:11.5px;color:#444;margin-bottom:2px}
 .popup-row strong{color:#222}
 
-#atlas-footer{flex-shrink:0;border-top:1px solid #e8e2db;padding:14px 18px 14px;background:#fff;font-family:'DM Sans',system-ui,sans-serif;font-size:11px;line-height:1.55;color:#888}
-.atlas-footer-motto{text-align:center;font-family:'DM Serif Display',serif;font-size:13px;color:#7B2D26;letter-spacing:0.02em;margin:0 0 10px;font-style:italic}
+#atlas-footer{flex-shrink:0;border-top:1px solid var(--border);padding:14px 18px 14px;background:var(--paper-raised);font-family:'EB Garamond',Georgia,serif;font-size:11px;line-height:1.55;color:#888}
+.atlas-footer-motto{text-align:center;font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--wine);letter-spacing:0.02em;margin:0 0 10px;font-style:italic}
 .atlas-footer-motto .fleuron{color:#a86259;font-style:normal;margin:0 6px;font-size:12px}
 .atlas-footer-links{display:flex;flex-wrap:wrap;gap:3px 12px;justify-content:center;margin:0 0 10px}
 .atlas-footer-links a{color:#888;text-decoration:none;border-bottom:1px solid transparent;transition:color .15s,border-color .15s;font-size:11px}
-.atlas-footer-links a:hover{color:#7B2D26;border-bottom-color:#7B2D26}
+.atlas-footer-links a:hover{color:var(--wine);border-bottom-color:var(--wine)}
 .atlas-footer-disclaimer{font-style:italic;font-size:10.5px;color:#999;text-align:center;line-height:1.5;margin:0 0 8px}
 .atlas-footer-copyright{text-align:center;font-style:italic;font-size:10.5px;color:#aaa;letter-spacing:0.04em;margin:0}
 </style>
@@ -637,7 +649,7 @@ function renderDetail(){
     const total=SITES.length;
     const cats=Object.keys(CATEGORIES).length;
     let html=`<div class="section-label">Atlas Overview</div>
-      <p style="font-size:12px;color:#555;margin-bottom:8px;line-height:1.5"><strong style="color:#7B2D26">${total}</strong> vineyard sites across <strong style="color:#7B2D26">${cats}</strong> grape categories, spanning the world's greatest terroirs from the blue slate of the Mosel to the volcanic schist of Etna.</p>
+      <p style="font-size:12px;color:#555;margin-bottom:8px;line-height:1.5"><strong style="color:var(--wine)">${total}</strong> vineyard sites across <strong style="color:var(--wine)">${cats}</strong> grape categories, spanning the world's greatest terroirs from the blue slate of the Mosel to the volcanic schist of Etna.</p>
       <div class="section-label" style="margin-top:14px">By Category</div>`;
     Object.entries(CATEGORIES).forEach(([name,m])=>{
       const count=SITES.filter(s=>s.cat===name).length;
