@@ -1,10 +1,10 @@
-# The Grand Cru Atlas
+# The Vineyard Atlas
 
 An interactive map of the world's greatest vineyard sites, organized by grape variety. Explore ~200 vineyard locations across 16 grape categories — from the blue Devonian slate of the Mosel to the galets roulés of Châteauneuf-du-Pape — with terroir descriptions and key producers for each site.
 
 ## Live Site
 
-**[→ Open the Grand Cru Atlas](https://jskarabot18.github.io/grand-cru-atlas/)**
+**[→ Open the Vineyard Atlas](https://jskarabot18.github.io/grand-cru-atlas/)**
 
 ## What's Inside
 
